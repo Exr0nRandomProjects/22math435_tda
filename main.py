@@ -13,14 +13,15 @@ infty_sign = tadasets.infty_sign(n=3000, noise=0.1)
 
 print(torus.shape)
 
-ax = plt.figure().add_subplot(projection='3d')
-ax.scatter(*torus.T)
-plt.show()
-
+# ax = plt.figure().add_subplot(projection='3d')
+# ax.scatter(*torus.T)
+# plt.show()
+#
 print("ripping...")
 
 # data = np.random.random((100,2))
 diagrams = ripser(torus)['dgms']
 print([x.shape for x in diagrams])
 plot_diagrams(diagrams, show=True)
+plt.savefig("out.png")
 
