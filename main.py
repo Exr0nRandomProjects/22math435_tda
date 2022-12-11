@@ -6,7 +6,7 @@ from persim import plot_diagrams
 
 import tadasets
 
-torus = tadasets.torus(n=200, c=2, a=1, noise=0.1)
+torus = tadasets.torus(n=800, c=2, a=1, noise=0.1)
 # swiss_roll = tadasets.swiss_roll(n=2000, r=4, ambient=10, noise=1.2)
 # dsphere = tadasets.dsphere(n=1000, d=12, r=3.14, ambient=14, noise=0.14)
 # infty_sign = tadasets.infty_sign(n=3000, noise=0.1)
@@ -19,8 +19,12 @@ print(torus.shape)
 
 print("ripping...")
 
-fig, barcode_ax = plt.subplots()
-prot_ax = fig.add_subplot(projection='3d')
+# fig, [barcode_ax, prot_ax] = plt.subplots(1, 2, figsize=(4, 6))
+# # prot_ax = fig.add_subplot(projection='3d')
+# prot_ax.set_
+fig = plt.figure(figsize=plt.figaspect(1/2.))
+barcode_ax = fig.add_subplot(1, 2, 1)
+prot_ax = fig.add_subplot(1, 2, 2, projection='3d')
 
 prot_ax.scatter(*torus.T)
 prot_ax.set_axis_off()
@@ -31,12 +35,13 @@ lifespans = ripped['dgms']
 epsilon_max = 0
 for dim, dim_pts in enumerate(lifespans):
     print(dim_pts.shape)
-    barcode_ax.scatter(*dim_pts.T, label=f"$H_{dim}")
-    epsilon_max = max(epsilon_max, np.max(dim_pts))
+    barcode_ax.scatter(*dim_pts.T, label=f"$H_{dim}$")
+    epsilon_max = max(epsilon_max, np.max(dim_pts[dim_pts != np.inf]))
 
-barcode_ax.set_xlim(0, epsilon_max)
-barcode_ax.set_ylim(0, epsilon_max)
-barcode_ax.plot([0, epsilon_max], [0, epsilon_max], style="--")
+bounds = [-0.1 * epsilon_max, 1.1 * epsilon_max]
+barcode_ax.set_xlim(*bounds)
+barcode_ax.set_ylim(*bounds)
+barcode_ax.plot(bounds, bounds, "--")
 barcode_ax.legend()
 plt.show()
 # print([x.shape for x in diagrams])
