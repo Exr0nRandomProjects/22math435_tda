@@ -7,6 +7,7 @@ from persim import plot_diagrams
 import tadasets
 
 torus = tadasets.torus(n=1200, c=2, a=1, noise=0.05)
+np.save('torus.npy', torus)
 # swiss_roll = tadasets.swiss_roll(n=2000, r=4, ambient=10, noise=1.2)
 # dsphere = tadasets.dsphere(n=1000, d=12, r=3.14, ambient=14, noise=0.14)
 # infty_sign = tadasets.infty_sign(n=3000, noise=0.1)

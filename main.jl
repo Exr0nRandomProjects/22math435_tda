@@ -1,26 +1,36 @@
 using LinearAlgebra
-using Plots
+# using Plots; pythonplot() # dependency error
+using Plots; plotlyjs()
 using Ripserer
+using NPZ
+using Chain
 
-println("hello")
+torus = @chain npzread("torus.npy") reshape(_, :, 3)
+println(torus |> size)
 
-function annulus(n, r1=1, r2=2, offset=(0, 0))
-    result = Tuple{Float64,Float64}[]
-    while length(result) < n
-        point = 2 * r2 * rand(2) .- r2
-        if r1 < norm(point) < r2
-            push!(result, (point[1] + offset[1], point[2] + offset[2]))
-        end
-    end
-    return result
-end
+# function annulus(n, r1=1, r2=2, offset=(0, 0))
+#     result = Tuple{Float64,Float64}[]
+#     while length(result) < n
+#         point = 2 * r2 * rand(2) .- r2
+#         if r1 < norm(point) < r2
+#             push!(result, (point[1] + offset[1], point[2] + offset[2]))
+#         end
+#     end
+#     return result
+# end
+# 
+# data = annulus(300)
+#
+#
 
-data = annulus(300)
+# println("data generated")
+# 
+# scatter(data; label="data", markersize=2, aspect_ratio=1, show=true)
+# println("plotted")
 
-println("data generated")
-
-scatter(data; label="data", markersize=2, aspect_ratio=1, show=true)
-println("plotted")
+plot(torus[:, 1], torus[:, 2], torus[:, 3], seriestype=:scatter, show=true)
+println("torus plotted")
+readline()
 
 
 # 
