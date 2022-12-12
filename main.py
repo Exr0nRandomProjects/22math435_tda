@@ -20,8 +20,6 @@ prot_ax = fig.add_subplot(1, 2, 2, projection='3d')
 prot_ax.scatter(*torus.T)
 prot_ax.set_axis_off()
 
-<<<<<<< HEAD
-
 
 # data = np.random.random((100,2))
 ripped = ripser(torus)
@@ -59,17 +57,5 @@ barcode_ax.plot(bounds, bounds, "--")
 barcode_ax.legend()
 plt.show()
 
-=======
-# ax = plt.figure().add_subplot(projection='3d')
-# ax.scatter(*torus.T)
-# plt.show()
-#
-print("ripping...")
-
-# data = np.random.random((100,2))
-diagrams = ripser(torus)['dgms']
-print([x.shape for x in diagrams])
-plot_diagrams(diagrams, show=True)
->>>>>>> fd7b2e9a8267cc592f0b3604019a95ba0c61a75f
 plt.savefig("out.png")
 
