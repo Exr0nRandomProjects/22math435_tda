@@ -194,7 +194,9 @@ def protein_to_points(filepath):
     s, d = load(filepath, filepath=True)
     p = Protein(s, d)
 
-    rule = lambda x: x["type"] == "CA" and isresidue(x)
+    # rule = lambda x: x["type"] == "CA" and isresidue(x)
+    rule = lambda x: isresidue(x)
+    # rule = lambda x: True
 
     filtered = list(filter(rule, p.points))
 
