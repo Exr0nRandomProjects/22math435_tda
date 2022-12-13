@@ -4,6 +4,7 @@ from matplotlib import pyplot as plt
 from ripser import ripser
 from persim import plot_diagrams
 from glob import glob
+from tqdm import tqdm
 
 # import tadasets
 #
@@ -65,8 +66,11 @@ def make_plot_from_fname(data):
 
 pdb_files = glob("./graph_theory_final/out/*.cif.npy")
 
-for pdb_file in pdb_files:
-    data = np.load(pdb_file)
-    make_plot_from_fname(data)
+with tqdm(total=len(pdb_files)) as pbar:
+    for pdb_file in tqdm(pdb_files):
+        pbar.set_description(pdb_file)
+        pbar.update(1)
+        data = np.load(pdb_file)
+        make_plot_from_fname(data)
 
 
