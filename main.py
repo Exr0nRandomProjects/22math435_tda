@@ -5,6 +5,7 @@ from ripser import ripser
 from persim import plot_diagrams
 from glob import glob
 from tqdm import tqdm
+from os.path import basename
 
 # import tadasets
 #
@@ -15,7 +16,43 @@ from tqdm import tqdm
 # infty_sign = tadasets.infty_sign(n=3000, noise=0.1)
 
 
-def make_plot_from_fname(data):
+def pickle_memoize(fname, creation_callback, verbose=False):
+    """
+    Try to read data from the pickle at `fname`, and save the output of
+    `creation_callback` to `fname` as a pickle if `fname` doesn't exist.
+    """
+    from pickle import load, dump, UnpicklingError
+    if verbose: print(f"looking for pickle file '{fname}'...")
+    try:
+        with open(fname, 'rb') as rf:
+            if verbose: print(f"    found pickle file '{fname}'! :)) loading it...")
+            return load(rf)
+    except (FileNotFoundError, UnpicklingError):
+        if verbose: print(f"    did not find pickle file '{fname}' or it was corrupted :( making it...")
+    # except UnpicklingError:
+    #     if verbose: print(f"    pickle file was corrupted! remaking...")
+        got = creation_callback()
+        try:
+            with open(fname, 'wb') as wf:
+                dump(got, wf)
+            if verbose: print(f"    successfully made pickle file '{fname}'! :)")
+        except TypeError as err:
+            from sys import stderr
+            if verbose: print("couldn't pickle the object! :(", err, file=stderr)
+        return got
+
+
+def make_lifespans(spatial_points):
+# data = np.random.random((100,2))
+    ripped = ripser(spatial_points)
+    lifespans = ripped['dgms']
+# print(ripped['idx_perm'][10])
+    print([x for i, x in enumerate(ripped['idx_perm']) if x != i])
+
+    return lifespans
+
+
+def make_plot_from_fname(lifespans, data):
 
     fig = plt.figure(figsize=plt.figaspect(1/2.))
     barcode_ax = fig.add_subplot(1, 2, 1)
@@ -25,26 +62,19 @@ def make_plot_from_fname(data):
     prot_ax.set_axis_off()
 
 
-# data = np.random.random((100,2))
-    ripped = ripser(data)
-    lifespans = ripped['dgms']
-# print(ripped['idx_perm'][10])
-    print([x for i, x in enumerate(ripped['idx_perm']) if x != i])
-
-
     barcode_scatters = []
 
-    def hover(event):
-        if event.inaxes == barcode_ax:
-            for betti_dim, barcode_scatter in enumerate(barcode_scatters):
-                cont, ind = barcode_scatter.contains(event)
-                if cont:
-                    affected_simplicies = ind['ind']
-                    for affected_id in affected_simplicies:
-                        print(lifespans[betti_dim][affected_id])
-                    # print(betti_dim, ind['ind'])
-
-    fig.canvas.mpl_connect("motion_notify_event", hover)
+    # def hover(event):
+    #     if event.inaxes == barcode_ax:
+    #         for betti_dim, barcode_scatter in enumerate(barcode_scatters):
+    #             cont, ind = barcode_scatter.contains(event)
+    #             if cont:
+    #                 affected_simplicies = ind['ind']
+    #                 for affected_id in affected_simplicies:
+    #                     print(lifespans[betti_dim][affected_id])
+    #                 # print(betti_dim, ind['ind'])
+    #
+    # fig.canvas.mpl_connect("motion_notify_event", hover)
 
 
     epsilon_max = 0
@@ -64,13 +94,15 @@ def make_plot_from_fname(data):
 
 
 
-pdb_files = glob("./graph_theory_final/out/*.cif.npy")
+pdb_files = glob("./graph_theory_final/out/IN_THE_DOC/*.cif.npy")
 
 with tqdm(total=len(pdb_files)) as pbar:
     for pdb_file in tqdm(pdb_files):
         pbar.set_description(pdb_file)
         pbar.update(1)
-        data = np.load(pdb_file)
-        make_plot_from_fname(data)
+        spatial_points = np.load(pdb_file)
+        print(spatial_points.size)
+        lifespans = pickle_memoize(f"temp/{basename(pdb_file)}.lifespans_pkl", lambda: make_lifespans(spatial_points))
+        make_plot_from_fname(lifespans, spatial_points)
 
 
