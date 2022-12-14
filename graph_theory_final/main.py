@@ -6,7 +6,7 @@ from persim import plot_diagrams
 from glob import glob
 from tqdm import tqdm
 from os.path import basename
-from multiprocessing import Pool
+from multiprocessing import get_context, Pool
 
 # import tadasets
 #
@@ -46,9 +46,11 @@ def pickle_memoize(fname, creation_callback, verbose=False):
 def make_lifespans(spatial_points):
 # data = np.random.random((100,2))
     ripped = ripser(spatial_points, maxdim=2)
+    print("made lifespans!!")
     lifespans = ripped['dgms']
+    print("made lifespans!!")
 # print(ripped['idx_perm'][10])
-    print([x for i, x in enumerate(ripped['idx_perm']) if x != i])
+    # print([x for i, x in enumerate(ripped['idx_perm']) if x != i])
 
     return lifespans
 
@@ -97,15 +99,28 @@ def make_plot_from_fname(lifespans, data, pdb_file):
 
 
 
+def pool_worker(fname):
+    print("entered pool worker!")
+    spatial_points = np.load(fname)
+    print("loaded points")
+    lifespans = make_lifespans(spatial_points)
+    print("computed barcodes")
+    make_plot_from_fname(lifespans, spatial_points, fname)
+    print("plotted!")
 
 if __name__ == '__main__':
     pdb_files = glob("./out/ION_CHANNELS/*.cif.npy")
-    spatial_points_all = [np.load(pdb_file) for pdb_file in pdb_files]
-    with Pool(20) as p:
-        lifespans_all = p.map(make_lifespans, spatial_points_all)
-    print("finished computing homology")
-    for lifespans, points, pdb_file in zip(tqdm(lifespans_all, desc="making charts"), spatial_points_all, pdb_files):
-        make_plot_from_fname(lifespans, points, pdb_file)
+    # spatial_points_all = (np.load(pdb_file) for pdb_file in pdb_files)
+    with get_context("spawn").Pool(1) as p:
+        list(tqdm(p.imap(pool_worker, pdb_files)))
+        print("pool initialized!")
+        # for lifespans, points, pdb_file in zip(
+        #         tqdm(p.imap(make_lifespans, spatial_points_all), total=len(pdb_files)),
+        #         spatial_points_all,
+        #         pdb_files
+        #         ):
+        #     make_plot_from_fname(lifespans, points, pdb_file)
+    # print("finished computing homology")
 
 
 
