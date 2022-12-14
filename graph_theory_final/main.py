@@ -44,7 +44,7 @@ def pickle_memoize(fname, creation_callback, verbose=False):
 
 def make_lifespans(spatial_points):
 # data = np.random.random((100,2))
-    ripped = ripser(spatial_points)
+    ripped = ripser(spatial_points, maxdim=2)
     lifespans = ripped['dgms']
 # print(ripped['idx_perm'][10])
     print([x for i, x in enumerate(ripped['idx_perm']) if x != i])
@@ -52,7 +52,7 @@ def make_lifespans(spatial_points):
     return lifespans
 
 
-def make_plot_from_fname(lifespans, data):
+def make_plot_from_fname(lifespans, data, pdb_file):
 
     fig = plt.figure(figsize=plt.figaspect(1/2.))
     barcode_ax = fig.add_subplot(1, 2, 1)
@@ -88,21 +88,31 @@ def make_plot_from_fname(lifespans, data):
     barcode_ax.set_xlim(*bounds)
     barcode_ax.set_ylim(*bounds)
     barcode_ax.plot(bounds, bounds, "--")
-    barcode_ax.legend()
-    plt.show()
+    barcode_ax.legend(loc="lower right")
+    plt.title(pdb_file)
+    plt.savefig(f'imgs/{pdb_file.replace("/", "-")}.png')
+
+    # plt.show()
 
 
 
 
-pdb_files = glob("./graph_theory_final/out/IN_THE_DOC/*.cif.npy")
+
+# pdb_files = glob("./out/ENZYMES/*.cif.npy")
+pdb_files = glob("./out/ION_CHANNELS/*.cif.npy")
 
 with tqdm(total=len(pdb_files)) as pbar:
-    for pdb_file in tqdm(pdb_files):
+    print("initializing...")
+    for pdb_file in tqdm(pdb_files[:1]):
         pbar.set_description(pdb_file)
         pbar.update(1)
+
         spatial_points = np.load(pdb_file)
         print(spatial_points.size)
-        lifespans = pickle_memoize(f"temp/{basename(pdb_file)}.lifespans_pkl", lambda: make_lifespans(spatial_points))
-        make_plot_from_fname(lifespans, spatial_points)
+
+        # lifespans = pickle_memoize(f"temp/{basename(pdb_file)}.lifespans_pkl", lambda: make_lifespans(spatial_points))
+        lifespans = make_lifespans(spatial_points)
+
+        make_plot_from_fname(lifespans, spatial_points, pdb_file)
 
 

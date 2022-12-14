@@ -1,9 +1,16 @@
 import wget
+cat_name = "ENZYMES"
 
-
-cat_name = "IN_THE_DOC"
 # ids = "P05177,P10635,P10632,Q96C23,Q9HCG7,P04062,P47712,P08684,P05108,O15269,O95237,O95470,P07902,P22570,P49619,Q5VZY2,Q6ZNC8,Q9HAY6,Q9HBH5,Q9NUN7,Q02928,P11712,Q6GTS8,O14495,P33260,P51589,P52429,Q16760,Q53H12,Q5KSL6,Q8NEB5,Q8NFR3,Q8NFU5,Q8TDN7,Q92781,Q969W0,Q9HA82,Q9NUV7,Q9Y6T7,Q9NZ01,Q16678,A5PLL7,Q02083,Q8N9I5,Q96SQ9,Q9UJ83,O60218,O75912,P52824,Q13574,Q14376,Q16739,Q643R3,Q6P531,Q7Z449,Q8N5B7,Q8NBN7,Q9HCS2,Q9UHH9,Q9UJ14,O14494,O75907,P00352,P47895,P50053,P51687,Q06136,Q6P1A2,Q6ZMG9,Q6ZWT7,Q8NF37,Q96G23,Q96N66,Q96NR8,Q9NY59,Q9UHE5,Q9UHK6,P04798,A6NGU5,O15270,O43688,O60906,O75452,O94788,P23743,P27544,P49675,P51570,Q13510,Q5QJU3,Q7L5N7,Q86XP1,Q8IU89,Q8IZV5,Q8N3Y7,Q8TC12,Q99999,Q9NR71,O00154,P98187".split(",")
-ids = "Q9NY46,Q9Y5Y9,Q9UI33,Q15858,O00180,Q7Z418,Q9Z2T2,Q91WD2,Q4KMQ2,Q7Z3S7,P61981,Q6UXB4,P50148,Q2PKF4,Q12965,O00160,Q8WXR4,Q9Y2K3,Q9Y623,Q9Y4I1,Q13459,Q9HD67".split(",")
+# ids = "Q9NY46,Q9Y5Y9,Q9UI33,Q15858,O00180,Q7Z418,Q9Z2T2,Q91WD2,Q4KMQ2,Q7Z3S7,P61981,Q6UXB4,P50148,Q2PKF4,Q12965,O00160,Q8WXR4,Q9Y2K3,Q9Y623,Q9Y4I1,Q13459,Q9HD67".split(",")
+
+# ION_CHANNELS
+# https://www.uniprot.org/uniprotkb?query="ion%20channel"%20AND%20%28length%3A%5B200%20TO%201000%5D%29
+# ids = "Q7NDN8,Q401N2,Q5H8A6,Q9LNJ0,Q9SKD6,Q9LEQ3,Q8GWD2,O65717,O82226,Q8RWS9,Q94AS9,O00299,Q09917,Q95Y52,Q9U358,Q9Y696,Q8C1E7,O65718,Q6NXK8,Q708S7,Q708S6,Q708S8,Q9Z0W7,Q9Z1Q5,Q9XSA7,Q9BXJ8,Q84W41,Q8LGN1,O14050,Q96FT7,Q9M8W7,P78348,P06971,Q24278,P46098,Q8WWG9,Q6X1Y6,G5ECT0,O35240,Q19351,Q1XA76,Q5H8A5,Q9UHC3,Q9C8E7,P55926,Q93YT1,Q8GXJ4,Q56X46,Q8L7Z0,P39719,Q5N941,Q9SJA4,Q9SL29,Q9SU64,Q9LD40,Q9M0A4,Q9S9N5,P35563,P23979,Q9SKD7,Q866Y9,P54245,Q9FXH6,Q16515,Q925H0,A8XNX8,O70212,Q708S3,Q708S4,Q4VY51,Q62962,O81078,Q9FH75,Q9LFN5,Q9SHV1,Q9SHV2,Q8LGN0,Q9LFN8,Q9LV72,O81776,Q6RHR6,Q9C5V5,Q08967,Q9NY37,A0A072VMJ3,G7IBJ4,G7JND3,Q9LDR2,Q7XP59,Q708S5,Q9LD37,Q7XJL2,Q7T1N4,Q9SW97,O04660,Q9SDQ4,Q9JHS6,F4IME2,Q84M97,O60741,P07510,P14867,P17787,P23416,P43681,P47870,Q05586,Q16281,Q8WXA8,Q9NQW8,O95264,P30926,P36544,P39086,P42263,P48058,Q04844,Q13002,Q15822,Q16280,Q70Z44,Q99572,Q9UGM1,P02708,P23415".split(",")
+
+# ENZYMES
+# https://www.uniprot.org/uniprotkb?query=enzyme%20AND%20(organism_id:9606)%20AND%20(length:[200%20TO%201000])
+ids = "P23368,P49427,Q712K3,Q9H0E7,P62068,Q70CQ1,Q70EK9,Q86T82,Q04446,Q8IU60,Q8TBC4,Q9P109,O00303,P48163,Q9GZZ9,Q9UK59,Q16798,Q9BYF1,Q8N2K1,Q8IZD4,P61086,Q9UBE0,Q9Y385,Q8IV48,Q9UBT2,P0DPD6,P09958,P42892,O95352,Q16763,Q9H832,Q5VVX9,Q969T4,Q8NBK3,Q8IUX4,Q8WVN8,Q08426,P41238,Q96LR5,P0DPD8,P48147,Q8NBJ7,Q9BWT3,P16083,P49768,Q86VQ3,Q8N608,Q8NET6,Q8WVM0,Q8WWY8,Q9BQ52,Q9H5Q4,Q9NUW8,Q9Y6K0,Q9Y6Y8,O43529,P15374,P27695,Q70EL3,Q86SR1,Q8IXK2,Q8NCW6,Q96EB6,Q96JF0,Q96JJ7,Q9Y646,O95395,O95396,O95453,Q5K4E3,Q5MY95,Q5VVQ6,Q7L1S5,Q8IVS2,Q8NFW8,Q9BY49,Q9H2A9,Q9H777,Q9H8X2,Q9NPH2,Q9Y251,O43272,P30793,Q66K79,Q6P179,Q6PIY7,Q6Y288,Q8NBQ5,Q8NCH0,Q8NCL4,Q8TCT0,Q8WUD6,Q92542,Q92560,Q96BI3,Q96D53,Q96GR2,Q9BRJ7,Q9NQZ7,Q9NRB3".split(",")
 
 
 for ID in ids:
@@ -13,195 +20,4 @@ for ID in ids:
             f"./inp/{cat_name}/AF-{ID}.cif")
     except:
         print("no good!", ID)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-exit(0)
-
-from parse import parse
-import rich
-import re
-import io
-import rich.console
-from rich import print
-import click
-import pandas as pd
-from bioservices import UniProt
-from pypdb.clients.pdb.pdb_client import get_pdb_file, PDBFileType
-import os
-import wget
-import requests
-import gzip
-import tqdm
-import traceback
-from requests.adapters import HTTPAdapter, Retry
-import shutil
-
-def main():
-    # if not os.path.exists("stream.tar.gz"):
-    #     url = "https://rest.uniprot.org/uniprotkb/stream?compressed=true&fields=accession%2Cid%2Cprotein_name%2Clength%2Cxref_prints%2Cft_transmem%2Cxref_alphafolddb%2Cxref_pdb&format=tsv&query=%28go%3A0008305%29"
-    #     wget.download(url, "stream.tar.gz")
-    # df = pd.read_table(gzip.open("stream.tar.gz"))
-    # pdb_out_dir = "/mnt/db/data/input/interns/int_pdbs/pos"
-    # fasta_out_dir = "/mnt/db/data/input/interns/int_fastas/pos"
-    # fetched = 0
-    # found = 0
-    # # df.to_csv("./whee.csv")
-    # # exit(1)
-    # for i, row in tqdm.tqdm(df.iterrows()):
-    #     if "disintegrin" in row["Protein names"].lower(): continue
-    #     # if type(row["PDB"]) == str:
-    #     #     found+=1
-    #     #     for ident in row["PDB"][:-1].split(';'):
-    #     #         if not os.path.exists(f"{pdb_out_dir}/{ident}.cif"):
-    #     #             pdb_str = get_pdb_file(ident.lower(), filetype=PDBFileType.CIF, compression=True)
-    #     #             pdb_file = open(f"{pdb_out_dir}/{ident}.cif", "wb")
-    #     #             pdb_file.write(pdb_str)
-    #     #             pdb_file.close()
-    #     #             fetched += 1
-    #     # # elif type(row["AlphaFoldDB"]) == str:
-    #     # #     found+=1
-    #     # #     for ident in row["AlphaFoldDB"][:-1].split(';'):
-    #     # #         if not os.path.exists(f"{pdb_out_dir}/AF_{ident}.cif"):
-    #     # #             wget.download(f"https://alphafold.ebi.ac.uk/files/AF-{ident}-F1-model_v2.cif", f"{pdb_out_dir}/AF_{ident}.cif")
-    #     # #             fetched += 1
-    #     # else:
-    #     try:
-    #         if not os.path.exists(f"{pdb_out_dir}/AF_{row['Entry']}.cif"):
-    #             wget.download(f"https://alphafold.ebi.ac.uk/files/AF-{row['Entry']}-F1-model_v3.cif", f"{pdb_out_dir}/AF_{row['Entry']}.cif")
-    #             print(f"Downloading {row['Entry']}")
-    #             # wget.download(f"https://swissmodel.expasy.org/repository/uniprot/{row['Entry']}.pdb", f"{pdb_out_dir}/SM_{ident}.pdb")
-    #     except:
-    #         traceback.print_exc()
-    #         pass
-
-
-    # print("Exhausted results!")
-    # print(found)
-    re_next_link = re.compile(r'<(.+)>; rel="next"')
-    retries = Retry(total=5, backoff_factor=0.25, status_forcelist=[500, 502, 503, 504])
-    session = requests.Session()
-    session.mount("https://", HTTPAdapter(max_retries=retries))
-
-    def get_next_link(headers):
-        if "Link" in headers:
-            match = re_next_link.match(headers["Link"])
-            if match:
-                return match.group(1)
-
-    def get_batch(batch_url):
-        while batch_url:
-            response = session.get(batch_url)
-            response.raise_for_status()
-            total = response.headers["x-total-results"]
-            yield response, total
-            batch_url = get_next_link(response.headers)
-
-    ranges = [(0, 500, 200), # 200
-              (700, 840, 5000),
-              (840, 1020, 800),
-              (1020, 1100, 2500),
-              (1100, 1230, 2500)]
-
-    for low,up,num_integrins in ranges:
-        url = f"https://rest.uniprot.org/uniprotkb/search?query=NOT%20(go:0008305)%20AND%20(length:[{low}%20TO%20{up}])&format=tsv&fields=accession%2Cid%2Cprotein_name%2Clength%2Cft_transmem%2Cxref_alphafolddb%2Cxref_pdb"
-
-        pdb_out_dir = "/mnt/db/data/input/interns/int_pdbs/raw/nneg"
-        fasta_out_dir = "/mnt/db/data/input/interns/int_fastas/neg"
-        fetched = 0
-        print("ok srsly")
-
-        for batch, total in get_batch(url):
-            print('batch??')
-            df2 = pd.read_table(io.StringIO(batch.text))
-
-            for i, row in tqdm.tqdm(df2.iterrows()):
-                if "disintegrin" in row["Protein names"].lower(): continue
-                if type(row["PDB"]) == str:
-                    for ident in row["PDB"][:-1].split(';'):
-                        if not os.path.exists(f"{pdb_out_dir}/{ident}.cif"):
-                            pdb_str = get_pdb_file(ident.lower(), filetype=PDBFileType.CIF, compression=True)
-                            pdb_file = open(f"{pdb_out_dir}/{ident}.cif", "wb")
-                            pdb_file.write(pdb_str)
-                            pdb_file.close()
-                            fetched += 1
-                    # else:
-                    #     print("found")
-                    if not os.path.exists(f"{pdb_out_dir}/AF_{row['Entry']}.cif"):
-                        try:
-                            wget.download(f"https://alphafold.ebi.ac.uk/files/AF-{row['Entry']}-F1-model_v2.cif", f"{pdb_out_dir}/AF_{ident}.cif")
-                            fetched += 1
-                        except:
-                            pass
-
-            if fetched > num_integrins:
-                break
-
-        # elif type(row["Transmembrane"]) == str:
-        #     fasta_req = f"https://www.ebi.ac.uk/proteins/api/proteins?offset=0&size=5&sort=score&accession={row['Entry']}"
-        #     r = requests.get(fasta_req, headers={"Accept": "text/x-fasta"})
-        #     region = [int(i) for i in parse("TRANSMEM {}..{} {}", row["Transmembrane"])[:2]]
-        #     raw_seq = r.text
-        #     if region[0] > len(raw_seq) - region[1]:
-        #         raw_seq = raw_seq[:region[0]-1]
-        #     else:
-        #         raw_seq = raw_seq[region[1]:]
-        #     fasta = open(f"{fasta_out_dir}/{row['Entry']}.fasta", "w")
-        #     fasta.write(raw_seq)
-        #     fasta.close()
-
-
-import pickle
-if __name__ == "__main__":
-    # pdb_orig_out_dir = "/mnt/db/data/input/interns/int_pdbs/pos"
-    # pdb_out_dir = "/mnt/db/data/input/interns/int_pdbs/pos2"
-    # l = pickle.load(open("/mnt/db/data/out.pkl", "rb"))
-    # for acc in l:
-    #     if not os.path.exists(f"{pdb_orig_out_dir}/AF_{acc}.cif"):
-    #         try:
-    #             wget.download(f"https://alphafold.ebi.ac.uk/files/AF-{acc}-F1-model_v3.cif", f"{pdb_out_dir}/AF_{acc}.cif")
-    #             print(f"Downloading {acc}")
-    #         except:
-    #             pass
-    #     else:
-    #         shutil.copy(f"{pdb_orig_out_dir}/AF_{acc}.cif", pdb_out_dir)
-    main()
-
-
 

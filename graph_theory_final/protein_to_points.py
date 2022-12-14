@@ -14,6 +14,8 @@ import time
 import matplotlib.pyplot as plt
 import numpy as np
 
+from main import *
+
 def protein_to_points(filepath):
     def load(protein, filepath=False):
         """
@@ -194,12 +196,28 @@ def protein_to_points(filepath):
     s, d = load(filepath, filepath=True)
     p = Protein(s, d)
 
+
+    def rule(x):
+        # print(vars(x))
+        # print(x)
+        if x["type"] != "CA" and x["type"] != "CB":
+            return False
+
+        if not isresidue(x):
+            return False
+
+        return True
+        # return isresidue(x)
+        # return x["surface"] != None
+
     # rule = lambda x: x["type"] == "CA" and isresidue(x)
-    rule = lambda x: isresidue(x)
+    # rule = lambda x: x["type"] == "CA" or isresidue(x)
+    # rule = lambda x: isresidue(x)
 
     filtered = list(filter(rule, p.points))
 
     d = np.asarray([point.coords for point in filtered])
+    print(len(d))
 
     # fig = plt.figure()
     # ax = fig.add_subplot(projection='3d')
@@ -211,4 +229,9 @@ def protein_to_points(filepath):
     return d
 
 if __name__ == '__main__':
-    print(protein_to_points("./inp/1osa.cif"))
+# Q4KMQ2
+    neg_points = protein_to_points("./inp/IN_THE_DOC/AF-Q9Y4I1.cif")
+    pos_points = protein_to_points("./inp/IN_THE_DOC/AF-Q4KMQ2.cif")
+
+    lifespans = make_lifespans(pos_points)
+    make_plot_from_fname(lifespans, pos_points)
