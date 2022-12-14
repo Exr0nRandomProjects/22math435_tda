@@ -6,6 +6,7 @@ from persim import plot_diagrams
 from glob import glob
 from tqdm import tqdm
 from os.path import basename
+from multiprocessing import Pool
 
 # import tadasets
 #
@@ -90,33 +91,40 @@ def make_plot_from_fname(lifespans, data, pdb_file):
     barcode_ax.plot(bounds, bounds, "--")
     barcode_ax.legend(loc="lower right")
     plt.title(pdb_file)
-    plt.savefig(f'imgs/{pdb_file.replace("/", "-")}.png')
+    plt.savefig(f'imgs_hotpotato/{pdb_file.replace("/", "-")}.png')
 
     # plt.show()
 
 
 
 
+if __name__ == '__main__':
+    pdb_files = glob("./out/ION_CHANNELS/*.cif.npy")
+    spatial_points_all = [np.load(pdb_file) for pdb_file in pdb_files]
+    with Pool(20) as p:
+        lifespans_all = p.map(make_lifespans, spatial_points_all)
+    print("finished computing homology")
+    for lifespans, points, pdb_file in zip(tqdm(lifespans_all, desc="making charts"), spatial_points_all, pdb_files):
+        make_plot_from_fname(lifespans, points, pdb_file)
 
-# pdb_files = glob("./out/ENZYMES/*.cif.npy")
-pdb_files = glob("./out/ION_CHANNELS/*.cif.npy")
 
-with tqdm(total=len(pdb_files)) as pbar:
-    print("initializing...")
-    for pdb_file in tqdm(pdb_files[:8]):
-        pbar.set_description(pdb_file)
-        pbar.update(1)
 
-        spatial_points = np.load(pdb_file)
-
-        if spatial_points.size > 1000:
-            continue
-
-        print(spatial_points.size)
-
-        # lifespans = pickle_memoize(f"temp/{basename(pdb_file)}.lifespans_pkl", lambda: make_lifespans(spatial_points))
-        lifespans = make_lifespans(spatial_points)
-
-        make_plot_from_fname(lifespans, spatial_points, pdb_file)
-
+# with tqdm(total=len(pdb_files)) as pbar:
+#     print("initializing...")
+#     for pdb_file in tqdm(pdb_files[:8]):
+#         pbar.set_description(pdb_file)
+#         pbar.update(1)
+#
+#         spatial_points = np.load(pdb_file)
+#
+#         if spatial_points.size > 1000:
+#             continue
+#
+#         print(spatial_points.size)
+#
+#         # lifespans = pickle_memoize(f"temp/{basename(pdb_file)}.lifespans_pkl", lambda: make_lifespans(spatial_points))
+#         lifespans = make_lifespans(spatial_points)
+#
+#         make_plot_from_fname(lifespans, spatial_points, pdb_file)
+#
 
