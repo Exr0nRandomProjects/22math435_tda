@@ -7,6 +7,7 @@ from glob import glob
 from tqdm import tqdm
 from os.path import basename
 from multiprocessing import get_context, Pool
+from os import sys
 
 # import tadasets
 #
@@ -111,9 +112,13 @@ def pool_worker(fname):
 if __name__ == '__main__':
     pdb_files = glob("./out/ION_CHANNELS/*.cif.npy")
     # spatial_points_all = (np.load(pdb_file) for pdb_file in pdb_files)
-    with get_context("spawn").Pool(1) as p:
-        list(tqdm(p.imap(pool_worker, pdb_files)))
-        print("pool initialized!")
+    # with get_context("spawn").Pool(1) as p:
+    for i, fname in enumerate(pdb_files):
+        if i % 4 == int(sys.argv[1]):
+            print(f"starting on {i} {fname}")
+            pool_worker(fname)
+    # list(tqdm(map(pool_worker, pdb_files), total=len(pdb_files)))
+        # print("pool initialized!")
         # for lifespans, points, pdb_file in zip(
         #         tqdm(p.imap(make_lifespans, spatial_points_all), total=len(pdb_files)),
         #         spatial_points_all,
