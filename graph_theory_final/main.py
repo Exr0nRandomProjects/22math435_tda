@@ -103,11 +103,15 @@ pdb_files = glob("./out/ION_CHANNELS/*.cif.npy")
 
 with tqdm(total=len(pdb_files)) as pbar:
     print("initializing...")
-    for pdb_file in tqdm(pdb_files[:1]):
+    for pdb_file in tqdm(pdb_files[:8]):
         pbar.set_description(pdb_file)
         pbar.update(1)
 
         spatial_points = np.load(pdb_file)
+
+        if spatial_points.size > 1000:
+            continue
+
         print(spatial_points.size)
 
         # lifespans = pickle_memoize(f"temp/{basename(pdb_file)}.lifespans_pkl", lambda: make_lifespans(spatial_points))
