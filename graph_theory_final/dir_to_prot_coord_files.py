@@ -6,4 +6,4 @@ files = os.listdir("./inp/ION_CHANNELS")
 
 for f in files:
     d = protein_to_points(f"./inp/ION_CHANNELS/{f}")
-    np.save(f"./out/ION_CHANNELS_SMALL/{f}.npy", d)
+    np.save(f"./out/ION_CHANNELS_SURFACE/{f}.npy", d)

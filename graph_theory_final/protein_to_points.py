@@ -197,7 +197,7 @@ def protein_to_points(filepath):
     p = Protein(s, d)
 
 
-    # def rule(x):
+    def rule(x):
         # print(vars(x))
         # print(x)
         # if x["type"] != "CA" and x["type"] != "CB":
@@ -209,8 +209,14 @@ def protein_to_points(filepath):
         # return True
         # return isresidue(x)
         # return x["surface"] != None
+        cond = x["type"] == "CA" and isresidue(x)
 
-    rule = lambda x: x["type"] == "CA" and isresidue(x)
+        # if cond:
+        #     print(x["surface"])
+
+        return cond # and x["surface"] >= 0.5
+
+    # rule = lambda x: x["type"] == "CA" and isresidue(x)
     # rule = lambda x: x["type"] == "CA" or isresidue(x)
     # rule = lambda x: isresidue(x)
 
@@ -231,7 +237,8 @@ def protein_to_points(filepath):
 if __name__ == '__main__':
 # Q4KMQ2
     # neg_points = protein_to_points("./inp/IN_THE_DOC/AF-Q9Y4I1.cif")
-    pos_points = protein_to_points("./inp/TESTING/AF-O15455-F1-model_v4.cif")
+    # pos_points = protein_to_points("./inp/NEUROTRANSMITTER/AF-P23978.cif")
+    pos_points = protein_to_points("./inp/NEUROTRANSMITTER/AF-Q08469.cif")
 
     lifespans = make_lifespans(pos_points)
     make_plot_from_fname(lifespans, pos_points, "yuh.")
