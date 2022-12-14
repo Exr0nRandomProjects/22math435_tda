@@ -197,20 +197,20 @@ def protein_to_points(filepath):
     p = Protein(s, d)
 
 
-    def rule(x):
+    # def rule(x):
         # print(vars(x))
         # print(x)
-        if x["type"] != "CA" and x["type"] != "CB":
-            return False
+        # if x["type"] != "CA" and x["type"] != "CB":
+        #     return False
 
-        if not isresidue(x):
-            return False
+        # if not isresidue(x):
+        #     return False
 
-        return True
+        # return True
         # return isresidue(x)
         # return x["surface"] != None
 
-    # rule = lambda x: x["type"] == "CA" and isresidue(x)
+    rule = lambda x: x["type"] == "CA" and isresidue(x)
     # rule = lambda x: x["type"] == "CA" or isresidue(x)
     # rule = lambda x: isresidue(x)
 
@@ -233,5 +233,5 @@ if __name__ == '__main__':
     neg_points = protein_to_points("./inp/IN_THE_DOC/AF-Q9Y4I1.cif")
     pos_points = protein_to_points("./inp/IN_THE_DOC/AF-Q4KMQ2.cif")
 
-    lifespans = make_lifespans(pos_points)
-    make_plot_from_fname(lifespans, pos_points)
+    # lifespans = make_lifespans(pos_points)
+    # make_plot_from_fname(lifespans, pos_points)
