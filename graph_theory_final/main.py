@@ -46,7 +46,7 @@ def pickle_memoize(fname, creation_callback, verbose=False):
 
 def make_lifespans(spatial_points):
 # data = np.random.random((100,2))
-    ripped = ripser(spatial_points, maxdim=2)
+    ripped = ripser(spatial_points, maxdim=1)
     print("made lifespans!!")
     lifespans = ripped['dgms']
     print("made lifespans!!")
@@ -94,7 +94,7 @@ def make_plot_from_fname(lifespans, data, pdb_file):
     barcode_ax.plot(bounds, bounds, "--")
     barcode_ax.legend(loc="lower right")
     plt.title(pdb_file)
-    plt.savefig(f'imgs_hotpotato/{pdb_file.replace("/", "-")}.png')
+    plt.savefig(f'imgs/albhuan/{pdb_file.replace("/", "-")}.png')
 
     # plt.show()
 
@@ -104,17 +104,19 @@ def pool_worker(fname):
     print("entered pool worker!")
     spatial_points = np.load(fname)
     print("loaded points")
-    lifespans = make_lifespans(spatial_points)
+    lifespans = pickle_memoize(f"temp/{basename(fname)}.lifespans_pkl", lambda: make_lifespans(spatial_points))
+    # lifespans = make_lifespans(spatial_points)
     print("computed barcodes")
     make_plot_from_fname(lifespans, spatial_points, fname)
     print("plotted!")
 
 if __name__ == '__main__':
-    pdb_files = glob("./out/ION_CHANNELS/*.cif.npy")
+    pdb_files = glob("./out/ENZYMES/*.cif.npy")
     # spatial_points_all = (np.load(pdb_file) for pdb_file in pdb_files)
     # with get_context("spawn").Pool(1) as p:
-    for i, fname in enumerate(pdb_files):
-        if i % 4 == int(sys.argv[1]):
+    for i, fname in enumerate(tqdm(pdb_files)):
+        # if i % 4 == int(sys.argv[1]) or True:
+        if True:
             print(f"starting on {i} {fname}")
             pool_worker(fname)
     # list(tqdm(map(pool_worker, pdb_files), total=len(pdb_files)))
