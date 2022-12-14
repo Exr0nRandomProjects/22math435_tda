@@ -88,14 +88,15 @@ def make_plot_from_fname(lifespans, data):
     barcode_ax.set_ylim(*bounds)
     barcode_ax.plot(bounds, bounds, "--")
     barcode_ax.legend(loc='lower right')
+    # barcode_ax.savefig(f"{fname}")
     plt.show()
 
 
 
 torus = tadasets.torus(n=800, c=2, a=1, noise=0.05)
 swiss_roll = tadasets.swiss_roll(n=800, r=4, noise=1.2)
-dsphere = tadasets.dsphere(n=800, d=3, r=3.14, noise=0.14)
-sphere = tadasets.sphere(n=800, r=5, noise=0.5)
+dsphere = tadasets.dsphere(n=800, d=3, r=10, noise=0.01)
+sphere = tadasets.sphere(n=800, r=10, noise=0.1)
 # infty_sign = tadasets.infty_sign(n=3000, noise=0.1)
 
 if __name__ == '__main__':
